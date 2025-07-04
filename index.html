@@ -1,746 +1,164 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Dream Radio" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#1a1a2e" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZjVmZiIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8dGV4dCB4PSI5MCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI2MCI+8J+OpzwvdGV4dD4KPC9zdmc+" />
-  <title>Dream Radio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-    
-    /* Animated background particles */
-    .bg-animation {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-    
-    .particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: rgba(0, 255, 255, 0.3);
-      border-radius: 50%;
-      animation: float 8s linear infinite;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-    }
-    
-    /* Glassmorphism header */
-    header {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 30px 20px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .header-content {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .logo {
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(45deg, #00f5ff, #ff00ff, #00f5ff);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradient 3s ease-in-out infinite;
-      margin-bottom: 10px;
-    }
-    
-    .tagline {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
-      letter-spacing: 2px;
-    }
-    
-    @keyframes gradient {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    
-    /* Glowing header background */
-    header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
-      animation: pulse 4s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.05); }
-    }
-    
-    /* Modern container layout */
-    .main-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    /* Enhanced player container */
-    .player-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border-radius: 25px;
-      padding: 40px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      max-width: 600px;
-      transition: all 0.3s ease;
-    }
-    
-    .player-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 30px 60px rgba(0, 255, 255, 0.2);
-    }
-    
-    .player-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-      animation: shimmer 3s linear infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    .player-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #00f5ff;
-      text-align: center;
-    }
-    
-    /* Custom Play Button */
-    .play-button-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .custom-play-button {
-      background: linear-gradient(135deg, #00f5ff, #ff00ff);
-      border: none;
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      font-size: 2rem;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .custom-play-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
-    }
-    
-    .custom-play-button:active {
-      transform: scale(0.95);
-    }
-    
-    .custom-play-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      animation: shimmer 2s linear infinite;
-    }
-    
-    .custom-play-button.playing {
-      background: linear-gradient(135deg, #ff4444, #ff8800);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    .custom-play-button.playing::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      animation: ripple 1.5s ease-out infinite;
-    }
-    
-    @keyframes ripple {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-    }
-    
-    .status-text {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.8);
-      margin-top: 10px;
-      transition: all 0.3s ease;
-    }
-    
-    .status-text.playing {
-      color: #00f5ff;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-    
-    @keyframes glow {
-      from { text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-      to { text-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
-    }
-    
-    /* Custom audio player styling */
-    audio {
-      width: 100%;
-      border-radius: 15px;
-      outline: none;
-      background: rgba(0, 0, 0, 0.3);
-      position: relative;
-      z-index: 2;
-      min-height: 54px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-    }
-    
-    /* iOS Safari audio controls fix */
-    audio::-webkit-media-controls-panel {
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 15px;
-    }
-    
-    audio::-webkit-media-controls-play-button {
-      background: rgba(0, 255, 255, 0.8);
-      border-radius: 50%;
-    }
-    
-    /* Android Chrome audio controls */
-    audio::-webkit-media-controls {
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 15px;
-    }
-    
-    /* Enhanced chat container */
-    .chat-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border-radius: 25px;
-      padding: 30px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      width: 100%;
-      max-width: 900px;
-      height: 600px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .chat-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 30px 60px rgba(255, 0, 255, 0.1);
-    }
-    
-    .chat-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #ff00ff;
-      text-align: center;
-    }
-    
-    #rt-9886cc53232d6fc9ea38abefab79acad {
-      width: 100%;
-      height: calc(100% - 60px);
-      border-radius: 15px;
-      overflow: hidden;
-    }
-    
-    /* Floating music notes animation */
-    .music-notes {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2rem;
-      color: rgba(0, 255, 255, 0.6);
-      animation: musicFloat 4s ease-in-out infinite;
-    }
-    
-    @keyframes musicFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
-    }
-    
-    /* Enhanced footer */
-    footer {
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(20px);
-      padding: 30px 20px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.6);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #00f5ff, #ff00ff, #00f5ff, transparent);
-      animation: borderGlow 3s linear infinite;
-    }
-    
-    @keyframes borderGlow {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    /* Mobile-first responsive design */
-    @media (max-width: 768px) {
-      .logo { font-size: 2rem; }
-      .tagline { font-size: 0.9rem; }
-      .player-container, .chat-container { 
-        margin: 15px; 
-        padding: 20px; 
-      }
-      .chat-container { height: 450px; }
-      .main-container { gap: 20px; padding: 20px 10px; }
-      
-      /* Better touch targets */
-      audio {
-        min-height: 60px;
-        touch-action: manipulation;
-      }
-      
-      /* Improved touch scrolling */
-      .chat-container {
-        -webkit-overflow-scrolling: touch;
-        overflow-y: auto;
-      }
-      
-      /* Reduce animations on mobile for better performance */
-      .particle {
-        animation-duration: 12s;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .logo { font-size: 1.8rem; }
-      .player-container, .chat-container { 
-        padding: 15px; 
-        margin: 10px;
-        border-radius: 15px;
-      }
-      .chat-container { height: 400px; }
-      
-      /* Larger touch targets for mobile */
-      audio {
-        min-height: 65px;
-        font-size: 16px; /* Prevents zoom on iOS */
-      }
-      
-      /* Optimize for mobile browsers */
-      header {
-        padding: 20px 15px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      
-      /* Better mobile chat experience */
-      #rt-9886cc53232d6fc9ea38abefab79acad {
-        border-radius: 10px;
-      }
-    }
-    
-    /* Specific iOS optimizations */
-    @media (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
-      body {
-        -webkit-text-size-adjust: 100%;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        user-select: none;
-      }
-      
-      /* Fix iOS audio controls */
-      audio {
-        -webkit-appearance: none;
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(0, 255, 255, 0.3);
-      }
-      
-      /* Prevent iOS bounce effect */
-      .main-container {
-        -webkit-overflow-scrolling: touch;
-      }
-    }
-    
-    /* Android specific optimizations */
-    @media screen and (max-width: 480px) {
-      /* Better Android Chrome experience */
-      audio {
-        background: rgba(0, 0, 0, 0.7);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-      }
-      
-      /* Optimize for Android browsers */
-      .player-container:active,
-      .chat-container:active {
-        transform: scale(0.98);
-      }
-    }
-    
-    /* Loading animation */
-    .loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #0c0c0c, #1a1a2e);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      animation: fadeOut 2s ease-in-out 1s forwards;
-    }
-    
-    .loading-spinner {
-      width: 60px;
-      height: 60px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid #00f5ff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes fadeOut {
-      to { opacity: 0; pointer-events: none; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Dream Radio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary: #ff00cc;
+            --secondary: #00c3ff;
+            --bg: #0e0e1f;
+            --text: #ffffff;
+            --card: #1a1a2e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.7rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            background: var(--card);
+            color: var(--secondary);
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 0 8px rgba(0,195,255,0.3);
+        }
+
+        .buttons a:hover {
+            background: var(--secondary);
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .stream-container, .chat-container {
+            margin: 1rem auto;
+            width: 90%;
+            max-width: 900px;
+            background: var(--card);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 0 15px rgba(255, 0, 204, 0.2);
+            animation: slideUp 1.2s ease-out;
+        }
+
+        .stream-container h2 {
+            text-align: center;
+            color: var(--secondary);
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .chat-container {
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .chat-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .chat-container {
+                height: 500px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="loading">
-    <div class="loading-spinner"></div>
-  </div>
-  
-  <div class="bg-animation" id="particles"></div>
-  
-  <header>
-    <div class="header-content">
-      <div class="logo">🎧 Dream Radio</div>
-      <div class="tagline">LIVE STREAMING & CHAT EXPERIENCE</div>
-    </div>
-  </header>
 
-  <div class="main-container">
-    <div class="player-container">
-      <div class="music-notes">🎵</div>
-      <div class="player-title">Live Stream</div>
-      
-      <div class="play-button-container">
-        <button class="custom-play-button" id="playButton">
-          <span id="playIcon">▶️</span>
-        </button>
-        <div class="status-text" id="statusText">Κλικ για να ξεκινήσει η μουσική</div>
-      </div>
-      
-      <audio id="radioStream" preload="none" style="display: none;">
-        <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg" />
-        Ο περιηγητής σας δεν υποστηρίζει την αναπαραγωγή ήχου.
-      </audio>
-      
-      <audio controls id="audioControls" style="display: none;">
-        <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg" />
-        Ο περιηγητής σας δεν υποστηρίζει την αναπαραγωγή ήχου.
-      </audio>
-    </div>
+<header>
+    <h1>🎧 Dream Radio</h1>
+    <p>Μελωδίες που ταξιδεύουν την ψυχή σου</p>
+</header>
 
-    <div class="chat-container">
-      <div class="chat-title">Community Chat</div>
-      <div id="rt-9886cc53232d6fc9ea38abefab79acad"></div>
-      <script src="https://rumbletalk.com/client/?1FRIn!AH"></script>
-    </div>
-  </div>
+<div class="buttons">
+    <a href="https://dbakisdb.github.io/dream-radio/" target="_blank">🌐 Ιστότοπος</a>
+    <a href="https://service70.rumbletalk.net/1FRIn!AH/" target="_blank">💬 Chat Room</a>
+</div>
 
-  <footer>
-    <div>© 2025 Dream Radio – Μελωδίες που ταξιδεύουν την ψυχή 🎶</div>
-    <div style="margin-top: 10px; font-size: 0.8rem; opacity: 0.8;">
-      ✨ Crafted with passion for music lovers ✨
-    </div>
-  </footer>
+<section class="stream-container">
+    <h2>🔊 Live Stream</h2>
+    <audio controls autoplay>
+        <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg">
+        Ο browser σου δεν υποστηρίζει την αναπαραγωγή ήχου.
+    </audio>
+</section>
 
-  <script>
-    // Mobile detection and optimization
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    
-    // Optimize particle count for mobile
-    function createParticles() {
-      const container = document.getElementById('particles');
-      const particleCount = isMobile ? 15 : 50; // Fewer particles on mobile
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 8 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
-        container.appendChild(particle);
-      }
-    }
-    
-    // Initialize when page loads
-    window.addEventListener('load', () => {
-      createParticles();
-      
-      // Optimize hover effects for mobile
-      const containers = document.querySelectorAll('.player-container, .chat-container');
-      containers.forEach(container => {
-        if (!isMobile) {
-          container.addEventListener('mouseenter', () => {
-            container.style.transform = 'translateY(-8px) scale(1.02)';
-          });
-          
-          container.addEventListener('mouseleave', () => {
-            container.style.transform = 'translateY(0) scale(1)';
-          });
-        } else {
-          // Touch feedback for mobile
-          container.addEventListener('touchstart', () => {
-            container.style.transform = 'scale(0.98)';
-          });
-          
-          container.addEventListener('touchend', () => {
-            container.style.transform = 'scale(1)';
-          });
-        }
-      });
-    });
-    
-    // Enhanced audio handling for mobile
-    const audio = document.getElementById('radioStream');
-    const audioControls = document.getElementById('audioControls');
-    const playButton = document.getElementById('playButton');
-    const playIcon = document.getElementById('playIcon');
-    const statusText = document.getElementById('statusText');
-    const playerContainer = document.querySelector('.player-container');
-    
-    let isPlaying = false;
-    let userInteracted = false;
-    
-    // Handle play button click
-    playButton.addEventListener('click', async () => {
-      userInteracted = true;
-      
-      if (!isPlaying) {
-        try {
-          statusText.textContent = 'Σύνδεση...';
-          statusText.className = 'status-text';
-          
-          // Load and play the audio
-          audio.load();
-          await audio.play();
-          
-          isPlaying = true;
-          playButton.classList.add('playing');
-          playIcon.textContent = '⏸️';
-          statusText.textContent = '🎵 Παίζει Live - Dream Radio';
-          statusText.classList.add('playing');
-          
-          // Show audio controls after successful play
-          setTimeout(() => {
-            audioControls.style.display = 'block';
-            audioControls.currentTime = audio.currentTime;
-            if (audio.paused) {
-              audioControls.play();
-            }
-          }, 1000);
-          
-          // Visual feedback
-          playerContainer.style.boxShadow = '0 30px 60px rgba(0, 255, 255, 0.4)';
-          playerContainer.style.borderColor = 'rgba(0, 255, 255, 0.3)';
-          
-        } catch (error) {
-          console.error('Playback failed:', error);
-          statusText.textContent = 'Σφάλμα - Δοκίμασε ξανά';
-          statusText.className = 'status-text';
-          
-          // Show controls as fallback
-          audioControls.style.display = 'block';
-          playButton.style.display = 'none';
-        }
-      } else {
-        // Pause
-        audio.pause();
-        audioControls.pause();
-        isPlaying = false;
-        playButton.classList.remove('playing');
-        playIcon.textContent = '▶️';
-        statusText.textContent = 'Κλικ για να ξεκινήσει η μουσική';
-        statusText.classList.remove('playing');
-        
-        // Visual feedback
-        playerContainer.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
-        playerContainer.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-      }
-    });
-    
-    // Handle audio events
-    audio.addEventListener('play', () => {
-      if (userInteracted) {
-        isPlaying = true;
-        playButton.classList.add('playing');
-        playIcon.textContent = '⏸️';
-        statusText.textContent = '🎵 Παίζει Live - Dream Radio';
-        statusText.classList.add('playing');
-      }
-    });
-    
-    audio.addEventListener('pause', () => {
-      isPlaying = false;
-      playButton.classList.remove('playing');
-      playIcon.textContent = '▶️';
-      statusText.textContent = 'Κλικ για να ξεκινήσει η μουσική';
-      statusText.classList.remove('playing');
-    });
-    
-    audio.addEventListener('loadstart', () => {
-      if (userInteracted) {
-        statusText.textContent = 'Φόρτωση...';
-      }
-    });
-    
-    audio.addEventListener('canplay', () => {
-      if (userInteracted && !isPlaying) {
-        statusText.textContent = 'Έτοιμο για αναπαραγωγή';
-      }
-    });
-    
-    audio.addEventListener('error', (e) => {
-      console.error('Audio error:', e);
-      statusText.textContent = 'Σφάλμα - Δοκίμασε ξανά';
-      statusText.className = 'status-text';
-      
-      // Show standard controls as fallback
-      audioControls.style.display = 'block';
-      playButton.style.display = 'none';
-    });
-    
-    // Sync with audio controls
-    if (audioControls) {
-      audioControls.addEventListener('play', () => {
-        audio.play();
-      });
-      
-      audioControls.addEventListener('pause', () => {
-        audio.pause();
-      });
-      
-      audioControls.addEventListener('volumechange', () => {
-        audio.volume = audioControls.volume;
-      });
-    }
-    
-    // Handle mobile viewport changes
-    if (isMobile) {
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-          // Recalculate dimensions after orientation change
-          const chatContainer = document.querySelector('.chat-container');
-          if (chatContainer) {
-            chatContainer.style.height = window.innerHeight < 600 ? '350px' : '450px';
-          }
-        }, 100);
-      });
-      
-      // Prevent zoom on iOS
-      document.addEventListener('touchstart', (e) => {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      // Handle viewport height changes (iOS Safari)
-      const setVH = () => {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      };
-      
-      window.addEventListener('resize', setVH);
-      setVH();
-    }
-  </script>
+<section class="chat-container">
+    <iframe src="https://service70.rumbletalk.net/1FRIn!AH/"></iframe>
+</section>
+
+<footer>
+    © 2025 Dream Radio – Στα FM του ονείρου 🎙️<br>
+    Made with ❤️ από την Έλια για τον Άκη
+</footer>
+
 </body>
 </html>
