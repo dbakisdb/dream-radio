@@ -23,33 +23,108 @@
     audio {
       margin-top: 20px;
     }
+    .info-box {
+      background-color: #222;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      border: 1px solid #00ffcc;
+    }
+    .listeners {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #888;
+    }
+    .history {
+      margin-top: 25px;
+      text-align: left;
+      font-size: 0.9em;
+    }
+    .history h3 {
+      color: #00ffcc;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .history-item {
+      padding: 5px 0;
+      border-bottom: 1px solid #333;
+    }
+    .history-item:last-child {
+      border-bottom: none;
+    }
   </style>
 </head>
 <body>
   <h1>🎧 Dream Radio</h1>
   <p>Η μουσική που μεταφέρει συναίσθημα</p>
-
   <audio controls autoplay>
     <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg">
     Ο browser σου δεν υποστηρίζει audio player.
   </audio>
-
-  <div id="nowplaying">
-    🎶 Παίζει τώρα: <span id="track">Φόρτωση...</span>
+  
+  <div class="info-box">
+    <div id="nowplaying">
+      🎶 Παίζει τώρα: <span id="track">Monolink & Acid Pauli - The End</span>
+    </div>
+    <div class="listeners">
+      👥 Ακροατές: <span id="listener-count">1</span> | 
+      🎵 Bitrate: <span id="bitrate">320</span>kbps
+    </div>
+    
+    <div class="history">
+      <h3>📜 Πρόσφατα Τραγούδια</h3>
+      <div id="history-list">
+        <div class="history-item">1.) Monolink & Acid Pauli - The End</div>
+        <div class="history-item">2.) Joy Crookes - When You Were Mine</div>
+        <div class="history-item">3.) The Weeknd - In Your Eyes</div>
+        <div class="history-item">4.) MONOPHONICS - STRANGE LOVE(SENIOR CITIZENS MIX)(PSYCHEDELIC SOUL)</div>
+        <div class="history-item">5.) Richard Ashcroft - Born to Be Strangers</div>
+        <div class="history-item">6.) Dorothy La Bostrie/McKinley J. Millet/Robert Plant/Alison Krauss - Rich Woman</div>
+        <div class="history-item">7.) Broken Bells - Holding on for Life</div>
+        <div class="history-item">8.) Marsheaux - The Sun and the Rainfall</div>
+        <div class="history-item">9.) Monika - Proud</div>
+        <div class="history-item">10.) SAYGRACE feat. G-Eazy - You Don't Own Me (feat. G-Eazy)</div>
+      </div>
+    </div>
   </div>
-
+  
   <script>
     async function updateTrack() {
       try {
         const res = await fetch("https://sp3.streams.ovh/cp/get_info.php?p=8056");
         const data = await res.json();
-        const title = data.current_song || "Άγνωστο";
+        
+        // Update current track
+        const title = data.title || "Άγνωστο";
         document.getElementById("track").textContent = title;
+        
+        // Update listeners and bitrate
+        document.getElementById("listener-count").textContent = data.listeners || "0";
+        document.getElementById("bitrate").textContent = data.bitrate || "320";
+        
+        // Update history
+        if (data.history && data.history.length > 0) {
+          const historyList = document.getElementById("history-list");
+          historyList.innerHTML = "";
+          
+          data.history.slice(0, 10).forEach(item => {
+            const div = document.createElement("div");
+            div.className = "history-item";
+            div.innerHTML = item.replace(/<br>/g, "");
+            historyList.appendChild(div);
+          });
+        }
+        
       } catch (e) {
         document.getElementById("track").textContent = "Σφάλμα ανάγνωσης τίτλου";
       }
     }
+    
+    // Update every 10 seconds
     setInterval(updateTrack, 10000);
+    
+    // Initial load
     updateTrack();
   </script>
 </body>
