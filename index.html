@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dream Radio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    .banner {
       background-color: #111;
       color: #00ffcc;
-      padding: 15px;
-      font-size: 20px;
-    }
-    .content {
+      font-family: Arial, sans-serif;
+      text-align: center;
       padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.5em;
+    }
+    #nowplaying {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #ffffff;
     }
     audio {
       margin-top: 20px;
@@ -27,17 +26,31 @@
   </style>
 </head>
 <body>
-  <div class="banner">
-    🎧 Καλωσόρισες στο Dream Radio - Η μουσική που ταξιδεύει!
+  <h1>🎧 Dream Radio</h1>
+  <p>Η μουσική που μεταφέρει συναίσθημα</p>
+
+  <audio controls autoplay>
+    <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg">
+    Ο browser σου δεν υποστηρίζει audio player.
+  </audio>
+
+  <div id="nowplaying">
+    🎶 Παίζει τώρα: <span id="track">Φόρτωση...</span>
   </div>
 
-  <div class="content">
-    <h1>Dream Radio</h1>
-    <p>Μείνε συντονισμένος στη μουσική που νιώθεις…</p>
-    <audio controls>
-      <source src="https://sp3.streams.ovh/8056/stream" type="audio/mpeg">
-      Ο περιηγητής σου δεν υποστηρίζει το audio element.
-    </audio>
-  </div>
+  <script>
+    async function updateTrack() {
+      try {
+        const res = await fetch("https://sp3.streams.ovh/cp/get_info.php?p=8056");
+        const data = await res.json();
+        const title = data.current_song || "Άγνωστο";
+        document.getElementById("track").textContent = title;
+      } catch (e) {
+        document.getElementById("track").textContent = "Σφάλμα ανάγνωσης τίτλου";
+      }
+    }
+    setInterval(updateTrack, 10000);
+    updateTrack();
+  </script>
 </body>
 </html>
